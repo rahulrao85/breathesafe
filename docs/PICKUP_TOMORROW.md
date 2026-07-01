@@ -38,7 +38,7 @@ FastAPI on port 8080, single container. Endpoints:
 
 ### 4. Frontend (`frontend/`)
 - `index.html` — single-page app: header, narrative, KPI strip, filters+table, agent chat, multimodal upload, Looker placeholders, architecture diagram, disclaimer, footer
-- `static/css/styles.css` — public health / civic intelligence palette (dark, NOT hospital, NOT Sleep IQ)
+- `static/css/styles.css` — public health / civic intelligence palette (dark by default, with a light theme toggle; NOT hospital, NOT consumer-wearable)
 - `static/js/app.js` — fetch, render Markdown (incl. tables), event bindings
 - Served at `http://localhost:8080/`
 

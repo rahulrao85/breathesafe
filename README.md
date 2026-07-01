@@ -13,20 +13,17 @@ Built for the **Google Cloud Gen AI Academy APAC 2026 — Cohort 2** hackathon
 
 ---
 
-## 1. Why this is not "Sleep IQ with a new name"
+## 1. What BreatheSafe is
 
-| Sleep IQ answered... | BreatheSafe answers... |
-|---|---|
-| "What is happening to *my* sleep?" | "Where should *India* screen first?" |
+BreatheSafe is a **population-level screening-prioritization** system.
+It does not track individuals. The output is a ranked list of districts
+where OSA screening camps and awareness drives will have the highest
+public-health impact, not a recommendation for any single person.
 
 - **No** wearable ingestion
 - **No** CPAP / personal data
 - **No** individual diagnosis
 - **No** "your sleep score"
-
-BreatheSafe is a **population-level screening-prioritization** system.
-The output is a ranked list of districts, not a recommendation for any
-single person.
 
 ---
 

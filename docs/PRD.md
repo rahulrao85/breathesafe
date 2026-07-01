@@ -55,13 +55,11 @@ The core BigQuery view is `breathesafe.district_risk_scores`, where these datase
 - `awareness_gap`
 - priority ranking for screening/awareness campaigns
 
-## 5. Why This Is Not Sleep IQ 2.0
+## 5. Scope boundaries
 
-BreatheSafe does not ingest wearable data, CPAP data, or personal health files. It does not diagnose an individual. It is a public-health awareness and screening-prioritization system built on population data.
+BreatheSafe does not ingest wearable data, CPAP data, or personal health files. It does not diagnose an individual. It is a public-health awareness and screening-prioritization system built entirely on population-level datasets.
 
-Sleep IQ answered: "What is happening to my sleep?"
-
-BreatheSafe answers: "Where in India should we create sleep-apnea awareness first?"
+The system answers one question: **"Where in India should sleep-apnea screening camps and awareness drives be launched first?"**
 
 ## 6. Risk Model
 
@@ -173,4 +171,4 @@ RAG is useful, but the core judging story is unified data plus intelligence. Do 
 
 ---
 
-*Final decision: Build BreatheSafe. PulseCare is rejected because it is too close to Sleep IQ.*
+*Final decision: Build BreatheSafe. A competing personal-tracker concept (PulseCare) was rejected during scoping because it would have duplicated personal-sleep-tracking territory rather than opening the public-health lane BreatheSafe occupies.*

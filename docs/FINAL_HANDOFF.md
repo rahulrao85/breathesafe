@@ -5,7 +5,7 @@
 **Theme:** "Unified Data Analytics & Intelligence"  
 **Owner:** Rahul Rao  
 **Date:** 29 Jun 2026  
-**Decision:** BreatheSafe is LOCKED. PulseCare is DEAD. Do not build anything that looks like Sleep IQ.
+**Decision:** BreatheSafe is LOCKED. PulseCare is DEAD. Do not build anything that looks like a personal-sleep tracker.
 
 ---
 
@@ -237,7 +237,7 @@ Single-page app. Sections top to bottom:
 └─────────────────────────────────────────────────────┘
 ```
 
-**Design tone:** Public health / civic intelligence. Clean, dark background, data-dense. NOT a hospital app. NOT Sleep IQ colors. Think government data portal meets modern dashboard.
+**Design tone:** Public health / civic intelligence. Clean, dark background, data-dense. NOT a hospital app. NOT consumer-wearable colors. Think government data portal meets modern dashboard.
 
 ---
 
@@ -297,7 +297,7 @@ Single-page app. Sections top to bottom:
 - ❌ Login / auth
 - ❌ Mobile app
 - ❌ Full Vertex AI Vector Search setup (use simple RAG fallback)
-- ❌ Anything that looks like Sleep IQ with a different name
+- ❌ Anything that looks like a personal sleep tracker with a different name
 
 ---
 

@@ -347,7 +347,7 @@ table {
   font-size: 13px;
 }
 th, td {
-  padding: 10px 14px;
+  padding: 9px 12px;
   text-align: left;
   border-bottom: 1px solid var(--border);
   font-feature-settings: 'tnum' 1;
@@ -363,6 +363,28 @@ th {
   position: sticky;
   top: 0;
   z-index: 1;
+}
+.th-with-help {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px dotted var(--text-muted);
+  cursor: help;
+}
+.help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  font-family: 'Inter', sans-serif;
+  text-transform: none;
 }
 tbody tr:hover { background: var(--bg-3); }
 tbody tr:last-child td { border-bottom: none; }

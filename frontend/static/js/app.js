@@ -73,7 +73,7 @@ async function loadDistricts() {
   params.set('sort_by', 'awareness_gap_score');
 
   const tbody = el('districtTableBody');
-  tbody.innerHTML = '<tr><td colspan="11" class="loading">Loading…</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="10" class="loading">Loading…</td></tr>';
 
   try {
     const res = await fetch(`${API}/api/districts?${params}`);
@@ -86,28 +86,31 @@ async function loadDistricts() {
       );
     }
     if (rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="11" class="loading">No districts match your filter.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="10" class="loading">No districts match your filter.</td></tr>';
       el('tableFoot').textContent = '';
       return;
     }
-    tbody.innerHTML = rows.map((r, i) => `
+    tbody.innerHTML = rows.map((r) => `
       <tr>
-        <td>${i + 1}</td>
         <td><strong>${r.district_name}</strong>${r.is_awareness_desert ? '<span class="desert-flag">DESERT</span>' : ''}</td>
         <td>${r.state_name}</td>
+        <td><span class="risk-pill ${r.risk_category}">${r.risk_category}</span></td>
         <td>${fmt.float(r.risk_score, 3)}</td>
         <td>${fmt.float(r.awareness_gap_score, 3)}</td>
+        <td>${r.awareness_normalized != null ? fmt.float(r.awareness_normalized, 3) : '—'}</td>
+        <td title="Population x 9.6% prevalence x (1 - awareness)">${fmt.num(r.estimated_undiagnosed)}</td>
         <td>${fmt.pm(r.pm25_annual_mean)}</td>
         <td>${fmt.pct(r.pct_adults_hypertension)}</td>
         <td>${fmt.pct(r.pct_adults_overweight_obese)}</td>
-        <td>${r.awareness_normalized != null ? fmt.float(r.awareness_normalized, 3) : '—'}</td>
-        <td>${fmt.num(r.estimated_undiagnosed)}</td>
-        <td><span class="risk-pill ${r.risk_category}">${r.risk_category}</span></td>
       </tr>
     `).join('');
-    el('tableFoot').textContent = `Showing ${rows.length} district${rows.length === 1 ? '' : 's'} · sorted by awareness-gap score · data joined from NFHS-5 + Census 2011 + CPCB AQI + Google Trends`;
+    el('tableFoot').innerHTML =
+      `Showing ${rows.length} district${rows.length === 1 ? '' : 's'} · sorted by awareness-gap score · ` +
+      `data joined from NFHS-5 + Census 2011 + CPCB AQI + Google Trends. ` +
+      `<strong>Est. OSA Cases (Undx)</strong> = district population × 9.6% OSA prevalence × (1 − awareness). ` +
+      `Prevalence anchored to Sharma et al., <em>Lancet Respiratory Medicine</em>, 2020.`;
   } catch (e) {
-    tbody.innerHTML = `<tr><td colspan="11" class="loading">Error loading: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" class="loading">Error loading: ${e.message}</td></tr>`;
   }
 }
 
