@@ -1,0 +1,74 @@
+# =============================================================================
+# BreatheSafe .gitignore
+# Public-facing repo. Keep secrets, large binaries, and local-only state OUT.
+# =============================================================================
+
+# --- Secrets & local config ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+service-account*.json
+credentials.json
+sa-*.json
+gha-creds-*.json
+cookies.txt
+headers.txt
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+.eggs/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- IDE / editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Local runtime artefacts ---
+.uvicorn.out
+.uvicorn.err
+*.log
+logs/
+
+# --- Hackathon submission artefacts (kept out of source) ---
+# The official PPT template lives in the parent folder and is shared
+# via Google Slides, not git.
+*.pptx
+*.pptx.bak
+Prototype*.pptx
+
+# --- Build / deploy artefacts ---
+dist/
+build/
+*.egg
+.coverage
+.tox/
+
+# --- OS junk ---
+.DS_Store
+Desktop.ini
+ehthumbs.db
+
+# --- Generated / cached ---
+*.bak
+*.tmp
+*.orig
+*.rej

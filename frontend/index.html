@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BreatheSafe — India's Sleep Apnea Awareness Intelligence</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ==================== HEADER ==================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">🫁</span>
+        <div>
+          <h1>BreatheSafe</h1>
+          <p class="tagline">India's Sleep Apnea Awareness Intelligence</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <a href="#disclaimer" class="btn-link">⚕️ Disclaimer</a>
+        <a href="https://github.com/topics/breathesafe" class="btn-link" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== NARRATIVE ==================== -->
+  <section class="narrative">
+    <div class="narrative-inner">
+      <p class="lede">
+        India has an estimated <strong>~100 million undiagnosed obstructive sleep apnea cases</strong>.
+        <strong>BreatheSafe</strong> identifies <em>awareness deserts</em> — districts where estimated OSA risk is
+        high but public awareness is near zero — by joining 5 public datasets in BigQuery.
+      </p>
+      <p class="narrative-sub">Answer: <em>Where in India should sleep apnea screening camps go first?</em></p>
+    </div>
+  </section>
+
+  <!-- ==================== KPI STRIP ==================== -->
+  <section class="kpi-strip" id="kpiStrip">
+    <div class="kpi-card" id="kpiDistricts">
+      <div class="kpi-value">—</div>
+      <div class="kpi-label">Districts Analyzed</div>
+    </div>
+    <div class="kpi-card kpi-high" id="kpiHigh">
+      <div class="kpi-value">—</div>
+      <div class="kpi-label">High Risk Districts</div>
+    </div>
+    <div class="kpi-card kpi-desert" id="kpiDesert">
+      <div class="kpi-value">—</div>
+      <div class="kpi-label">Awareness Deserts</div>
+    </div>
+    <div class="kpi-card kpi-top" id="kpiTop">
+      <div class="kpi-value">—</div>
+      <div class="kpi-label">Top Priority District</div>
+    </div>
+  </section>
+
+  <!-- ==================== FILTERS + TABLE ==================== -->
+  <section class="panel">
+    <div class="panel-header">
+      <h2>District Risk Table</h2>
+      <div class="filters">
+        <select id="stateFilter" aria-label="Filter by state">
+          <option value="">All states</option>
+        </select>
+        <select id="riskFilter" aria-label="Filter by risk category">
+          <option value="">All risk levels</option>
+          <option value="HIGH">HIGH</option>
+          <option value="MODERATE">MODERATE</option>
+          <option value="LOW">LOW</option>
+        </select>
+        <input id="searchBox" type="search" placeholder="Search district…" />
+        <button id="resetBtn" class="btn-secondary">Reset</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="districtTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>District</th>
+            <th>State</th>
+            <th>Risk</th>
+            <th>Gap</th>
+            <th>PM2.5</th>
+            <th>Hypertension</th>
+            <th>Obesity</th>
+            <th>Awareness</th>
+            <th>Est. Undiagnosed</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody id="districtTableBody">
+          <tr><td colspan="11" class="loading">Loading districts…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-foot" id="tableFoot"></p>
+  </section>
+
+  <!-- ==================== AGENT CHAT ==================== -->
+  <section class="panel agent-panel">
+    <div class="panel-header">
+      <h2>🤖 Ask BreatheSafe</h2>
+      <span class="badge">Vertex AI (Gemini 2.5 Flash) + ADK + BigQuery</span>
+    </div>
+    <div class="quick-prompts">
+      <button class="chip" data-prompt="Which 5 districts in Uttar Pradesh should get sleep apnea screening camps first?">Top 5 UP districts</button>
+      <button class="chip" data-prompt="Why is Delhi NCR a high priority for BreatheSafe?">Why Delhi NCR?</button>
+      <button class="chip" data-prompt="Show me high-risk districts where awareness is low.">Awareness deserts</button>
+      <button class="chip" data-prompt="Draft a 100-word public awareness message for the highest-risk district.">Draft awareness message</button>
+    </div>
+    <form id="askForm" class="ask-form">
+      <input id="askInput" type="text" placeholder="Ask anything about OSA screening priorities in India…" autocomplete="off" />
+      <button type="submit" class="btn-primary">Ask</button>
+    </form>
+    <div id="agentResponse" class="agent-response empty">
+      <p class="placeholder">Agent responses appear here. Try a quick prompt above, or ask your own question.</p>
+    </div>
+  </section>
+
+  <!-- ==================== MULTIMODAL ==================== -->
+  <section class="panel multimodal-panel">
+    <div class="panel-header">
+      <h2>📷 Multimodal Demo</h2>
+      <span class="badge">Vertex AI Vision (Gemini 2.5 Flash) + BigQuery cross-ref</span>
+    </div>
+    <p class="muted">Upload a news image (e.g., Delhi air pollution headline) and BreatheSafe will extract the location
+      + topic and cross-reference with district risk data.</p>
+    <form id="imageForm" class="image-form">
+      <input type="file" id="imageInput" accept="image/*" />
+      <button type="submit" class="btn-primary">Analyze</button>
+    </form>
+    <div id="imageResponse" class="image-response empty">
+      <p class="placeholder">Image analysis appears here.</p>
+    </div>
+  </section>
+
+  <!-- ==================== LOOKER DASHBOARD ==================== -->
+  <section class="panel looker-panel">
+    <div class="panel-header">
+      <h2>📊 Live India Dashboard</h2>
+      <span class="badge">BigQuery ↔ Cloud Run ↔ Browser</span>
+      <a href="https://datastudio.google.com/reporting/e8879c34-66ef-427c-a8f5-9fb8ef09d20d" target="_blank" rel="noopener" class="btn-secondary">Open in Looker ↗</a>
+    </div>
+    <p class="muted">The same <code>district_risk_scores</code> view that powers the agent, rendered live below. Built into the app so it always works without an external dashboard. (A Looker Studio report can also be connected to the same BigQuery view — see <a href="https://lookerstudio.google.com/" target="_blank" rel="noopener">lookerstudio.google.com</a> if you want to build a fully external one.)</p>
+    <div class="dashboard-controls">
+      <label>State
+        <select id="dashStateFilter"><option value="">All</option></select>
+      </label>
+      <label>Risk Category
+        <select id="dashRiskFilter">
+          <option value="">All</option>
+          <option value="HIGH">HIGH</option>
+          <option value="MODERATE">MODERATE</option>
+          <option value="LOW">LOW</option>
+        </select>
+      </label>
+      <label>Sort by
+        <select id="dashSortBy">
+          <option value="awareness_gap_score">Awareness Gap</option>
+          <option value="risk_score">Risk Score</option>
+          <option value="estimated_undiagnosed">Est. Undiagnosed</option>
+          <option value="pm25_annual_mean">PM2.5</option>
+        </select>
+      </label>
+      <label>Top
+        <select id="dashLimit">
+          <option value="10">10</option>
+          <option value="20" selected>20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </label>
+    </div>
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <h3>Top districts by awareness gap</h3>
+        <div id="dashBarChart" class="dash-bar-chart" aria-label="Horizontal bar chart of top districts"></div>
+      </div>
+      <div class="dash-card">
+        <h3>Risk vs awareness scatter</h3>
+        <div id="dashScatter" class="dash-scatter" aria-label="Scatter plot of risk vs awareness"></div>
+        <p class="dash-legend"><span class="dot dot-high"></span> HIGH&nbsp;&nbsp;<span class="dot dot-mod"></span> MODERATE&nbsp;&nbsp;<span class="dot dot-low"></span> LOW</p>
+      </div>
+      <div class="dash-card dash-card-wide">
+        <h3>Filtered table</h3>
+        <div class="dash-table-wrap">
+          <table class="dash-table" id="dashTable">
+            <thead>
+              <tr><th>District</th><th>State</th><th>Risk</th><th>Gap</th><th>Est. undiagnosed</th><th>PM2.5</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ARCHITECTURE ==================== -->
+  <section class="panel arch-panel">
+    <div class="panel-header">
+      <h2>🏗️ Architecture</h2>
+    </div>
+    <div class="arch-diagram">
+      <div class="arch-col">
+        <h4>Raw Data (Cloud Storage / public sources)</h4>
+        <ul>
+          <li>NFHS-5 district health data</li>
+          <li>Census 2011 demographics (calibrated synthetic)</li>
+          <li>CPCB / OpenAQ-style AQI (50 districts)</li>
+          <li>Google Trends awareness (36 states)</li>
+          <li>STOP-BANG population model</li>
+        </ul>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-col">
+        <h4>BigQuery <code>breathesafe</code> dataset</h4>
+        <ul>
+          <li><code>health_survey</code></li>
+          <li><code>demographics</code></li>
+          <li><code>air_quality</code></li>
+          <li><code>awareness_signals</code></li>
+          <li><code>screening_model</code></li>
+          <li><code>VIEW district_risk_scores</code></li>
+          <li><code>VIEW state_summary</code></li>
+        </ul>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-col">
+        <h4>Intelligence Layer</h4>
+        <ul>
+          <li>Vertex AI / Gemini 2.5 Flash</li>
+          <li>ADK agent with 3 tools</li>
+          <li>Vision (newspaper / poster)</li>
+          <li>RAG over WHO/ICMR/AASM corpus</li>
+        </ul>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-col">
+        <h4>Surface (Cloud Run)</h4>
+        <ul>
+          <li>FastAPI backend</li>
+          <li>Single-page web app</li>
+          <li>Looker Studio dashboard</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DISCLAIMER ==================== -->
+  <section class="disclaimer" id="disclaimer">
+    <h3>⚕️ Responsible AI Notice</h3>
+    <p>
+      <strong>BreatheSafe is a screening-prioritization tool, not a medical diagnostic system.</strong>
+      Population risk scores are estimates derived from public datasets (NFHS-5, Census 2011, CPCB-style AQI,
+      Google Trends) and do not predict individual OSA. Recommendations are intended for public health
+      campaign planning only and should not replace clinical assessment. No individual medical advice
+      is provided. Data sources include both real and calibrated synthetic data for demonstration
+      purposes; for production deployment, use the complete NFHS-5 Phase 2 dataset and live Google
+      Trends signals.
+    </p>
+  </section>
+
+  <footer class="site-footer">
+    <p>
+      <strong>BreatheSafe</strong> · Google Cloud Gen AI Academy APAC 2026 · Cohort 2
+      · Built by <a href="#">Rahul Rao</a> · Data: NFHS-5 · Census 2011 · CPCB · Google Trends
+    </p>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

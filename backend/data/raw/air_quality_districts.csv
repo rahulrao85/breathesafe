@@ -1,0 +1,51 @@
+district,state,latitude,longitude,pm25_annual_mean,aqi_category,data_source,year
+New Delhi,Delhi,28.6139,77.209,158.4,Very Poor,synthetic_calibrated_to_cpcb,2024
+Gurgaon,Haryana,28.4595,77.0266,121.5,Very Poor,synthetic_calibrated_to_cpcb,2024
+Noida (Gautam Buddha Nagar),Uttar Pradesh,28.5355,77.391,136.5,Very Poor,synthetic_calibrated_to_cpcb,2024
+Ghaziabad,Uttar Pradesh,28.6692,77.4538,133.4,Very Poor,synthetic_calibrated_to_cpcb,2024
+Faridabad,Haryana,28.4089,77.3178,164.2,Very Poor,synthetic_calibrated_to_cpcb,2024
+Lucknow,Uttar Pradesh,26.8467,80.9462,120.6,Very Poor,synthetic_calibrated_to_cpcb,2024
+Kanpur Nagar,Uttar Pradesh,26.4499,80.3319,133.5,Very Poor,synthetic_calibrated_to_cpcb,2024
+Varanasi,Uttar Pradesh,25.3176,83.0064,85.2,Moderate,synthetic_calibrated_to_cpcb,2024
+Patna,Bihar,25.6093,85.1376,105.3,Poor,synthetic_calibrated_to_cpcb,2024
+Muzaffarpur,Bihar,26.1209,85.3647,81.8,Moderate,synthetic_calibrated_to_cpcb,2024
+Agra,Uttar Pradesh,27.1767,78.0081,93.1,Poor,synthetic_calibrated_to_cpcb,2024
+Allahabad (Prayagraj),Uttar Pradesh,25.4358,81.8463,110.3,Poor,synthetic_calibrated_to_cpcb,2024
+Gorakhpur,Uttar Pradesh,26.7606,83.3732,81.6,Moderate,synthetic_calibrated_to_cpcb,2024
+Bareilly,Uttar Pradesh,28.367,79.4304,91.9,Poor,synthetic_calibrated_to_cpcb,2024
+Moradabad,Uttar Pradesh,28.8386,78.7733,119.0,Poor,synthetic_calibrated_to_cpcb,2024
+Mumbai,Maharashtra,19.076,72.8777,56.3,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Pune,Maharashtra,18.5204,73.8567,46.6,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Ahmedabad,Gujarat,23.0225,72.5714,57.7,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Surat,Gujarat,21.1702,72.8311,64.3,Moderate,synthetic_calibrated_to_cpcb,2024
+Nagpur,Maharashtra,21.1458,79.0882,50.3,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Thane,Maharashtra,19.2183,72.9781,64.2,Moderate,synthetic_calibrated_to_cpcb,2024
+Nashik,Maharashtra,19.9975,73.7898,60.9,Moderate,synthetic_calibrated_to_cpcb,2024
+Jaipur,Rajasthan,26.9124,75.7873,50.2,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Jodhpur,Rajasthan,26.2389,73.0243,44.7,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Bengaluru Urban,Karnataka,12.9716,77.5946,48.9,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Hyderabad,Telangana,17.385,78.4867,33.4,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Chennai,Tamil Nadu,13.0827,80.2707,27.3,Good,synthetic_calibrated_to_cpcb,2024
+Thiruvananthapuram,Kerala,8.5241,76.9366,27.4,Good,synthetic_calibrated_to_cpcb,2024
+Coimbatore,Tamil Nadu,11.0168,76.9558,46.2,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Visakhapatnam,Andhra Pradesh,17.6868,83.2185,40.1,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Kochi (Ernakulam),Kerala,9.9312,76.2673,45.2,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Mysuru,Karnataka,12.2958,76.6394,43.2,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Bhopal,Madhya Pradesh,23.2599,77.4126,71.4,Moderate,synthetic_calibrated_to_cpcb,2024
+Indore,Madhya Pradesh,22.7196,75.8577,88.9,Moderate,synthetic_calibrated_to_cpcb,2024
+Raipur,Chhattisgarh,21.2514,81.6296,65.1,Moderate,synthetic_calibrated_to_cpcb,2024
+Kolkata,West Bengal,22.5726,88.3639,113.1,Poor,synthetic_calibrated_to_cpcb,2024
+Howrah,West Bengal,22.5958,88.2636,129.8,Very Poor,synthetic_calibrated_to_cpcb,2024
+Guwahati (Kamrup Metropolitan),Assam,26.1445,91.7362,32.4,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Imphal West,Manipur,24.817,93.9368,37.2,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Shimla,Himachal Pradesh,31.1048,77.1734,26.5,Good,synthetic_calibrated_to_cpcb,2024
+Dehradun,Uttarakhand,30.3165,78.0322,29.1,Good,synthetic_calibrated_to_cpcb,2024
+Ludhiana,Punjab,30.901,75.8573,82.7,Moderate,synthetic_calibrated_to_cpcb,2024
+Amritsar,Punjab,31.634,74.8723,93.7,Poor,synthetic_calibrated_to_cpcb,2024
+Meerut,Uttar Pradesh,28.9845,77.7064,97.4,Poor,synthetic_calibrated_to_cpcb,2024
+Aligarh,Uttar Pradesh,27.8974,78.088,84.8,Moderate,synthetic_calibrated_to_cpcb,2024
+Sultanpur,Uttar Pradesh,26.2648,82.0727,94.0,Poor,synthetic_calibrated_to_cpcb,2024
+Aurangabad,Maharashtra,19.8762,75.3433,54.0,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Solapur,Maharashtra,17.6599,75.9064,48.3,Satisfactory,synthetic_calibrated_to_cpcb,2024
+Bhubaneswar (Khordha),Odisha,20.2961,85.8245,75.4,Moderate,synthetic_calibrated_to_cpcb,2024
+Ranchi,Jharkhand,23.3441,85.3096,64.6,Moderate,synthetic_calibrated_to_cpcb,2024

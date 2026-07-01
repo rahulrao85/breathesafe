@@ -1,0 +1,37 @@
+state,sleep_apnea_interest,snoring_interest,cpap_interest,data_source,period
+Maharashtra,72,65,54,synthetic_calibrated,last_12_months
+Karnataka,86,68,67,synthetic_calibrated,last_12_months
+Delhi,98,78,73,synthetic_calibrated,last_12_months
+Tamil Nadu,67,60,51,synthetic_calibrated,last_12_months
+Telangana,79,64,60,synthetic_calibrated,last_12_months
+Kerala,62,56,46,synthetic_calibrated,last_12_months
+Gujarat,43,40,32,synthetic_calibrated,last_12_months
+West Bengal,41,36,25,synthetic_calibrated,last_12_months
+Rajasthan,21,22,7,synthetic_calibrated,last_12_months
+Uttar Pradesh,10,20,4,synthetic_calibrated,last_12_months
+Bihar,11,16,3,synthetic_calibrated,last_12_months
+Madhya Pradesh,12,20,8,synthetic_calibrated,last_12_months
+Andhra Pradesh,57,51,36,synthetic_calibrated,last_12_months
+Punjab,30,34,21,synthetic_calibrated,last_12_months
+Haryana,32,37,24,synthetic_calibrated,last_12_months
+Odisha,17,22,9,synthetic_calibrated,last_12_months
+Jharkhand,9,15,2,synthetic_calibrated,last_12_months
+Chhattisgarh,12,17,4,synthetic_calibrated,last_12_months
+Assam,16,18,4,synthetic_calibrated,last_12_months
+Uttarakhand,27,28,14,synthetic_calibrated,last_12_months
+Himachal Pradesh,27,26,13,synthetic_calibrated,last_12_months
+Goa,61,53,44,synthetic_calibrated,last_12_months
+Manipur,10,8,0,synthetic_calibrated,last_12_months
+Meghalaya,3,5,1,synthetic_calibrated,last_12_months
+Tripura,7,11,3,synthetic_calibrated,last_12_months
+Mizoram,2,7,-1,synthetic_calibrated,last_12_months
+Nagaland,3,6,3,synthetic_calibrated,last_12_months
+Arunachal Pradesh,1,6,1,synthetic_calibrated,last_12_months
+Sikkim,8,13,5,synthetic_calibrated,last_12_months
+Jammu and Kashmir,16,23,6,synthetic_calibrated,last_12_months
+Ladakh,7,4,3,synthetic_calibrated,last_12_months
+Puducherry,44,41,31,synthetic_calibrated,last_12_months
+Chandigarh,58,53,37,synthetic_calibrated,last_12_months
+Dadra and Nagar Haveli and Daman and Diu,11,16,6,synthetic_calibrated,last_12_months
+Andaman and Nicobar Islands,5,8,5,synthetic_calibrated,last_12_months
+Lakshadweep,6,6,0,synthetic_calibrated,last_12_months

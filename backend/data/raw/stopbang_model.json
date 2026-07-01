@@ -1,0 +1,97 @@
+{
+  "model_name": "STOP-BANG Population Risk Index (BreatheSafe)",
+  "version": "1.0",
+  "description": "Adapted from the STOP-BANG clinical screening questionnaire (Chung et al., 2008) for population-level risk estimation. Uses district-level proxy indicators instead of individual measurements. NOT a diagnostic tool \u2014 designed for screening camp prioritization.",
+  "citation": "Chung F, et al. STOP questionnaire: a tool to screen patients for OSA. Anesthesiology. 2008;108(5):812-821.",
+  "asian_adjustments": "BMI threshold lowered from 35 to 25 kg/m\u00b2 per Asian population guidelines (WHO Expert Consultation, 2004).",
+  "factors": [
+    {
+      "code": "P",
+      "name": "Pressure (Hypertension)",
+      "proxy": "pct_adults_hypertension",
+      "source": "NFHS-5",
+      "weight": 0.25,
+      "normalization": "min-max across districts",
+      "rationale": "Hypertension is the strongest STOP-BANG correlate with OSA at population level"
+    },
+    {
+      "code": "B",
+      "name": "BMI (Obesity)",
+      "proxy": "pct_adults_overweight_obese",
+      "source": "NFHS-5",
+      "weight": 0.25,
+      "normalization": "min-max across districts",
+      "rationale": "Obesity (BMI \u2265 25 for Asian populations) is the #1 modifiable risk factor for OSA"
+    },
+    {
+      "code": "A",
+      "name": "Age > 50",
+      "proxy": "pct_population_age_50plus",
+      "source": "Census 2011",
+      "weight": 0.15,
+      "normalization": "min-max across districts",
+      "rationale": "OSA prevalence increases significantly after age 50"
+    },
+    {
+      "code": "G",
+      "name": "Gender (Male)",
+      "proxy": "pct_male",
+      "source": "Census 2011",
+      "weight": 0.1,
+      "normalization": "min-max across districts",
+      "rationale": "Male sex is an independent risk factor (2-3x higher prevalence)"
+    },
+    {
+      "code": "AQ",
+      "name": "Air Quality (PM2.5)",
+      "proxy": "pm25_annual_mean",
+      "source": "OpenAQ/CPCB",
+      "weight": 0.25,
+      "normalization": "min-max across districts",
+      "rationale": "Chronic air pollution exposure aggravates upper airway inflammation and OSA severity (Billings et al., 2019)"
+    }
+  ],
+  "omitted_factors": [
+    {
+      "code": "S",
+      "name": "Snoring",
+      "reason": "No population-level proxy; used as awareness signal instead"
+    },
+    {
+      "code": "T",
+      "name": "Tired",
+      "reason": "No population-level proxy available in public datasets"
+    },
+    {
+      "code": "O",
+      "name": "Observed apnea",
+      "reason": "No population-level proxy available"
+    },
+    {
+      "code": "N",
+      "name": "Neck circumference",
+      "reason": "No population-level anthropometric data at district level"
+    }
+  ],
+  "awareness_gap_formula": "awareness_gap = risk_score \u00d7 (1 - awareness_normalized)",
+  "awareness_source": "Google Trends search interest for 'sleep apnea' + 'snoring' + 'CPAP' by state",
+  "interpretation": {
+    "risk_score_range": [
+      0.0,
+      1.0
+    ],
+    "low_risk": [
+      0.0,
+      0.3
+    ],
+    "moderate_risk": [
+      0.3,
+      0.6
+    ],
+    "high_risk": [
+      0.6,
+      1.0
+    ],
+    "awareness_desert": "risk_score > 0.5 AND awareness_normalized < 0.3"
+  }
+}
