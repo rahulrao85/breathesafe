@@ -270,11 +270,60 @@ function debounce(fn, ms) {
   };
 }
 
+// ============================================================
+// Theme toggle (light / dark)
+// ============================================================
+const THEME_KEY = 'breathesafe-theme';
+
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function setTheme(next, persist = true) {
+  if (next === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  if (persist) {
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* localStorage unavailable */ }
+  }
+  updateThemeIcon();
+  // Re-render theme-aware widgets (scatter chart uses CSS-var colors)
+  if (typeof loadDashboard === 'function' && dashCache.rows.length) {
+    renderDashScatter(dashCache.rows);
+  }
+}
+
+function updateThemeIcon() {
+  const icon = el('themeIcon');
+  if (icon) icon.textContent = currentTheme() === 'light' ? '☀️' : '🌙';
+}
+
+function wireThemeToggle() {
+  const btn = el('themeToggle');
+  if (!btn) return;
+  updateThemeIcon();
+  btn.addEventListener('click', () => {
+    setTheme(currentTheme() === 'light' ? 'dark' : 'light');
+  });
+  // Sync if the OS theme changes and the user hasn't picked a manual override
+  if (window.matchMedia) {
+    const mq = window.matchMedia('(prefers-color-scheme: light)');
+    mq.addEventListener && mq.addEventListener('change', (e) => {
+      try {
+        if (!localStorage.getItem(THEME_KEY)) setTheme(e.matches ? 'light' : 'dark', false);
+      } catch (_) { /* ignore */ }
+    });
+  }
+}
+
 // ---- Initial load ----
 loadSummary();
 loadStateFilter();
 loadDistricts();
 initDashboard();
+wireThemeToggle();
 
 // ============================================================
 // Live India Dashboard (replaces the old Looker placeholder)
@@ -353,20 +402,28 @@ function renderDashScatter(rows) {
   // Sample down to 200 for performance
   const sample = rows.length > 200 ? rows.sort(() => Math.random() - 0.5).slice(0, 200) : rows;
   const W = 400, H = 240, PAD = 30;
+  // Theme-aware colors via CSS variables on :root / [data-theme="light"]
+  const styles = getComputedStyle(document.documentElement);
+  const axisColor = styles.getPropertyValue('--chart-axis').trim() || '#3a4a5e';
+  const textColor = styles.getPropertyValue('--chart-text').trim() || '#7d8ea3';
+  const highColor  = styles.getPropertyValue('--bar-HIGH-to').trim() || '#e53e3e';
+  const modColor   = styles.getPropertyValue('--bar-MOD-to').trim()  || '#ed8936';
+  const lowColor   = styles.getPropertyValue('--bar-LOW-to').trim()  || '#38b2ac';
+  const colorFor = (cat) => cat === 'HIGH' ? highColor : cat === 'MODERATE' ? modColor : lowColor;
   const pts = sample.map(r => {
     const x = PAD + (r.awareness_normalized || 0) * (W - 2 * PAD);
     const y = H - PAD - (r.risk_score || 0) * (H - 2 * PAD);
-    const color = r.risk_category === 'HIGH' ? '#fc8181' : r.risk_category === 'MODERATE' ? '#f6ad55' : '#4fd1c5';
+    const color = colorFor(r.risk_category);
     const r2 = Math.max(2, Math.min(8, Math.sqrt(r.estimated_undiagnosed || 0) / 40));
     return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r2.toFixed(1)}" fill="${color}" fill-opacity="0.7" stroke="${color}" stroke-width="0.5"><title>${r.district_name}, ${r.state_name} — risk ${fmt.float(r.risk_score,2)}, awareness ${fmt.float(r.awareness_normalized,2)}</title></circle>`;
   }).join('');
   el2.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-    <line x1="${PAD}" y1="${H-PAD}" x2="${W-PAD}" y2="${H-PAD}" stroke="#3a4a5e" stroke-width="0.5"/>
-    <line x1="${PAD}" y1="${PAD}" x2="${PAD}" y2="${H-PAD}" stroke="#3a4a5e" stroke-width="0.5"/>
-    <text x="${W/2}" y="${H-5}" fill="#7d8ea3" font-size="9" text-anchor="middle">Awareness (0 = none, 1 = high)</text>
-    <text x="5" y="${PAD+5}" fill="#7d8ea3" font-size="9">Risk</text>
-    <text x="5" y="${H-PAD-5}" fill="#7d8ea3" font-size="9">Low</text>
-    <text x="5" y="${PAD+10}" fill="#7d8ea3" font-size="9">High</text>
+    <line x1="${PAD}" y1="${H-PAD}" x2="${W-PAD}" y2="${H-PAD}" stroke="${axisColor}" stroke-width="0.5"/>
+    <line x1="${PAD}" y1="${PAD}" x2="${PAD}" y2="${H-PAD}" stroke="${axisColor}" stroke-width="0.5"/>
+    <text x="${W/2}" y="${H-5}" fill="${textColor}" font-size="9" text-anchor="middle">Awareness (0 = none, 1 = high)</text>
+    <text x="5" y="${PAD+5}" fill="${textColor}" font-size="9">Risk</text>
+    <text x="5" y="${H-PAD-5}" fill="${textColor}" font-size="9">Low</text>
+    <text x="5" y="${PAD+10}" fill="${textColor}" font-size="9">High</text>
     ${pts}
   </svg>`;
 }

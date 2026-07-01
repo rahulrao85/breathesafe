@@ -2,27 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="BreatheSafe — district-level sleep apnea awareness intelligence for India. Joins NFHS-5, Census, CPCB air quality, and Google Trends data to identify where sleep apnea screening camps should go first." />
+  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta property="og:title" content="BreatheSafe — India's Sleep Apnea Awareness Intelligence" />
+  <meta property="og:description" content="District-level public health intelligence for sleep apnea awareness. Built on BigQuery + Vertex AI for the Google Cloud Gen AI Academy APAC 2026." />
+  <meta property="og:type" content="website" />
   <title>BreatheSafe — India's Sleep Apnea Awareness Intelligence</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AB%81%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="/static/css/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Apply saved theme before paint to avoid flash
+    (function () {
+      try {
+        var t = localStorage.getItem('breathesafe-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) { /* localStorage unavailable, stay on default dark */ }
+    })();
+  </script>
 </head>
 <body>
   <!-- ==================== HEADER ==================== -->
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <span class="brand-icon">🫁</span>
+        <span class="brand-icon" aria-hidden="true">🫁</span>
         <div>
           <h1>BreatheSafe</h1>
           <p class="tagline">India's Sleep Apnea Awareness Intelligence</p>
         </div>
       </div>
       <div class="header-meta">
-        <a href="#disclaimer" class="btn-link">⚕️ Disclaimer</a>
-        <a href="https://github.com/topics/breathesafe" class="btn-link" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/rahulrao85/breathesafe" class="btn-link" target="_blank" rel="noopener" aria-label="View source on GitHub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          GitHub
+        </a>
+        <a href="https://datastudio.google.com/reporting/e8879c34-66ef-427c-a8f5-9fb8ef09d20d" class="btn-link" target="_blank" rel="noopener" aria-label="Open dashboard in Looker Studio">
+          📊 Looker
+        </a>
+        <a href="#disclaimer" class="btn-link" aria-label="Jump to responsible AI notice">⚕️ Disclaimer</a>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">
+          <span id="themeIcon" aria-hidden="true">🌙</span>
+        </button>
       </div>
     </div>
   </header>
@@ -60,9 +86,9 @@
   </section>
 
   <!-- ==================== FILTERS + TABLE ==================== -->
-  <section class="panel">
+  <section class="panel" aria-labelledby="tableHeading">
     <div class="panel-header">
-      <h2>District Risk Table</h2>
+      <h2 id="tableHeading">District Risk Table</h2>
       <div class="filters">
         <select id="stateFilter" aria-label="Filter by state">
           <option value="">All states</option>
@@ -73,8 +99,8 @@
           <option value="MODERATE">MODERATE</option>
           <option value="LOW">LOW</option>
         </select>
-        <input id="searchBox" type="search" placeholder="Search district…" />
-        <button id="resetBtn" class="btn-secondary">Reset</button>
+        <input id="searchBox" type="search" placeholder="Search district…" aria-label="Search district" />
+        <button id="resetBtn" class="btn-secondary" type="button">Reset</button>
       </div>
     </div>
     <div class="table-wrap">
@@ -103,57 +129,57 @@
   </section>
 
   <!-- ==================== AGENT CHAT ==================== -->
-  <section class="panel agent-panel">
+  <section class="panel agent-panel" aria-labelledby="agentHeading">
     <div class="panel-header">
-      <h2>🤖 Ask BreatheSafe</h2>
+      <h2 id="agentHeading">🤖 Ask BreatheSafe</h2>
       <span class="badge">Vertex AI (Gemini 2.5 Flash) + ADK + BigQuery</span>
     </div>
     <div class="quick-prompts">
-      <button class="chip" data-prompt="Which 5 districts in Uttar Pradesh should get sleep apnea screening camps first?">Top 5 UP districts</button>
-      <button class="chip" data-prompt="Why is Delhi NCR a high priority for BreatheSafe?">Why Delhi NCR?</button>
-      <button class="chip" data-prompt="Show me high-risk districts where awareness is low.">Awareness deserts</button>
-      <button class="chip" data-prompt="Draft a 100-word public awareness message for the highest-risk district.">Draft awareness message</button>
+      <button class="chip" type="button" data-prompt="Which 5 districts in Uttar Pradesh should get sleep apnea screening camps first?">Top 5 UP districts</button>
+      <button class="chip" type="button" data-prompt="Why is Delhi NCR a high priority for BreatheSafe?">Why Delhi NCR?</button>
+      <button class="chip" type="button" data-prompt="Show me high-risk districts where awareness is low.">Awareness deserts</button>
+      <button class="chip" type="button" data-prompt="Draft a 100-word public awareness message for the highest-risk district.">Draft awareness message</button>
     </div>
     <form id="askForm" class="ask-form">
-      <input id="askInput" type="text" placeholder="Ask anything about OSA screening priorities in India…" autocomplete="off" />
+      <input id="askInput" type="text" placeholder="Ask anything about OSA screening priorities in India…" autocomplete="off" aria-label="Ask the agent a question" />
       <button type="submit" class="btn-primary">Ask</button>
     </form>
-    <div id="agentResponse" class="agent-response empty">
+    <div id="agentResponse" class="agent-response empty" aria-live="polite">
       <p class="placeholder">Agent responses appear here. Try a quick prompt above, or ask your own question.</p>
     </div>
   </section>
 
   <!-- ==================== MULTIMODAL ==================== -->
-  <section class="panel multimodal-panel">
+  <section class="panel multimodal-panel" aria-labelledby="mmHeading">
     <div class="panel-header">
-      <h2>📷 Multimodal Demo</h2>
+      <h2 id="mmHeading">📷 Multimodal Demo</h2>
       <span class="badge">Vertex AI Vision (Gemini 2.5 Flash) + BigQuery cross-ref</span>
     </div>
     <p class="muted">Upload a news image (e.g., Delhi air pollution headline) and BreatheSafe will extract the location
       + topic and cross-reference with district risk data.</p>
     <form id="imageForm" class="image-form">
-      <input type="file" id="imageInput" accept="image/*" />
+      <input type="file" id="imageInput" accept="image/*" aria-label="Upload image for vision analysis" />
       <button type="submit" class="btn-primary">Analyze</button>
     </form>
-    <div id="imageResponse" class="image-response empty">
+    <div id="imageResponse" class="image-response empty" aria-live="polite">
       <p class="placeholder">Image analysis appears here.</p>
     </div>
   </section>
 
   <!-- ==================== LOOKER DASHBOARD ==================== -->
-  <section class="panel looker-panel">
+  <section class="panel looker-panel" aria-labelledby="lookerHeading">
     <div class="panel-header">
-      <h2>📊 Live India Dashboard</h2>
+      <h2 id="lookerHeading">📊 Live India Dashboard</h2>
       <span class="badge">BigQuery ↔ Cloud Run ↔ Browser</span>
       <a href="https://datastudio.google.com/reporting/e8879c34-66ef-427c-a8f5-9fb8ef09d20d" target="_blank" rel="noopener" class="btn-secondary">Open in Looker ↗</a>
     </div>
     <p class="muted">The same <code>district_risk_scores</code> view that powers the agent, rendered live below. Built into the app so it always works without an external dashboard. (A Looker Studio report can also be connected to the same BigQuery view — see <a href="https://lookerstudio.google.com/" target="_blank" rel="noopener">lookerstudio.google.com</a> if you want to build a fully external one.)</p>
     <div class="dashboard-controls">
       <label>State
-        <select id="dashStateFilter"><option value="">All</option></select>
+        <select id="dashStateFilter" aria-label="Dashboard state filter"><option value="">All</option></select>
       </label>
       <label>Risk Category
-        <select id="dashRiskFilter">
+        <select id="dashRiskFilter" aria-label="Dashboard risk filter">
           <option value="">All</option>
           <option value="HIGH">HIGH</option>
           <option value="MODERATE">MODERATE</option>
@@ -161,7 +187,7 @@
         </select>
       </label>
       <label>Sort by
-        <select id="dashSortBy">
+        <select id="dashSortBy" aria-label="Dashboard sort key">
           <option value="awareness_gap_score">Awareness Gap</option>
           <option value="risk_score">Risk Score</option>
           <option value="estimated_undiagnosed">Est. Undiagnosed</option>
@@ -169,7 +195,7 @@
         </select>
       </label>
       <label>Top
-        <select id="dashLimit">
+        <select id="dashLimit" aria-label="Dashboard row limit">
           <option value="10">10</option>
           <option value="20" selected>20</option>
           <option value="50">50</option>
@@ -202,9 +228,9 @@
   </section>
 
   <!-- ==================== ARCHITECTURE ==================== -->
-  <section class="panel arch-panel">
+  <section class="panel arch-panel" aria-labelledby="archHeading">
     <div class="panel-header">
-      <h2>🏗️ Architecture</h2>
+      <h2 id="archHeading">🏗️ Architecture</h2>
     </div>
     <div class="arch-diagram">
       <div class="arch-col">
@@ -217,7 +243,7 @@
           <li>STOP-BANG population model</li>
         </ul>
       </div>
-      <div class="arch-arrow">→</div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
       <div class="arch-col">
         <h4>BigQuery <code>breathesafe</code> dataset</h4>
         <ul>
@@ -230,7 +256,7 @@
           <li><code>VIEW state_summary</code></li>
         </ul>
       </div>
-      <div class="arch-arrow">→</div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
       <div class="arch-col">
         <h4>Intelligence Layer</h4>
         <ul>
@@ -240,7 +266,7 @@
           <li>RAG over WHO/ICMR/AASM corpus</li>
         </ul>
       </div>
-      <div class="arch-arrow">→</div>
+      <div class="arch-arrow" aria-hidden="true">→</div>
       <div class="arch-col">
         <h4>Surface (Cloud Run)</h4>
         <ul>
@@ -269,7 +295,9 @@
   <footer class="site-footer">
     <p>
       <strong>BreatheSafe</strong> · Google Cloud Gen AI Academy APAC 2026 · Cohort 2
-      · Built by <a href="#">Rahul Rao</a> · Data: NFHS-5 · Census 2011 · CPCB · Google Trends
+      · Built by <a href="https://github.com/rahulrao85" target="_blank" rel="noopener">Rahul Rao</a>
+      · <a href="https://github.com/rahulrao85/breathesafe" target="_blank" rel="noopener">Source on GitHub</a>
+      · Data: NFHS-5 · Census 2011 · CPCB · Google Trends
     </p>
   </footer>
 
