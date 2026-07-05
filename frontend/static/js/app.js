@@ -64,13 +64,17 @@ async function loadStateFilter() {
 async function loadDistricts() {
   const state = el('stateFilter').value;
   const risk = el('riskFilter').value;
+  const sortBy = el('sortBy').value;
+  const limit = el('limitSelect').value;
+  const desertOnly = el('desertCheck').checked;
   const search = el('searchBox').value.trim().toLowerCase();
 
   const params = new URLSearchParams();
   if (state) params.set('state', state);
   if (risk) params.set('risk_category', risk);
-  params.set('limit', '100');
-  params.set('sort_by', 'awareness_gap_score');
+  if (desertOnly) params.set('awareness_desert', 'true');
+  params.set('sort_by', sortBy);
+  params.set('limit', limit);
 
   const tbody = el('districtTableBody');
   tbody.innerHTML = '<tr><td colspan="10" class="loading">Loading…</td></tr>';
@@ -92,7 +96,7 @@ async function loadDistricts() {
     }
     tbody.innerHTML = rows.map((r) => `
       <tr>
-        <td><strong>${r.district_name}</strong>${r.is_awareness_desert ? '<span class="desert-flag">DESERT</span>' : ''}</td>
+        <td><strong>${r.district_name}</strong>${r.is_awareness_desert ? '<span class="desert-flag">DESERT</span>' : ''}${r.is_small_population ? '<span class="small-flag" title="Population <200K — survey uncertainty">S</span>' : ''}</td>
         <td>${r.state_name}</td>
         <td><span class="risk-pill ${r.risk_category}">${r.risk_category}</span></td>
         <td>${fmt.float(r.risk_score, 3)}</td>
@@ -105,7 +109,7 @@ async function loadDistricts() {
       </tr>
     `).join('');
     el('tableFoot').innerHTML =
-      `Showing ${rows.length} district${rows.length === 1 ? '' : 's'} · sorted by awareness-gap score · ` +
+      `Showing ${rows.length} district${rows.length === 1 ? '' : 's'} · sorted by ${el('sortBy').options[el('sortBy').selectedIndex].text.replace('Sort: ', '')} · ` +
       `data joined from NFHS-5 + Census 2011 + CPCB AQI + Google Trends. ` +
       `<strong>Est. OSA Cases (Undx)</strong> = district population × 9.6% OSA prevalence × (1 − awareness). ` +
       `Prevalence anchored to Sharma et al., <em>Lancet Respiratory Medicine</em>, 2020.`;
@@ -238,10 +242,16 @@ async function analyzeImage(file) {
 // ---- Event bindings ----
 el('stateFilter').addEventListener('change', loadDistricts);
 el('riskFilter').addEventListener('change', loadDistricts);
+el('sortBy').addEventListener('change', loadDistricts);
+el('limitSelect').addEventListener('change', loadDistricts);
+el('desertCheck').addEventListener('change', loadDistricts);
 el('searchBox').addEventListener('input', debounce(loadDistricts, 200));
 el('resetBtn').addEventListener('click', () => {
   el('stateFilter').value = '';
   el('riskFilter').value = '';
+  el('sortBy').value = 'estimated_undiagnosed';
+  el('limitSelect').value = '100';
+  el('desertCheck').checked = false;
   el('searchBox').value = '';
   loadDistricts();
 });

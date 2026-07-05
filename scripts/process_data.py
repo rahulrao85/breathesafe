@@ -290,13 +290,13 @@ def add_demo_coverage(nfhs, census, aqi, awareness):
             # Mirror the calibrated state-level awareness
             state_lookup = {
                 "Uttar Pradesh": (12, 20, 5), "Delhi": (100, 80, 75),
-                "Tamil Nadu": (68, 58, 50), "Madhya Pradesh": (15, 18, 6),
+                "Tamil Nadu": (40, 35, 25), "Madhya Pradesh": (15, 18, 6),
                 "Rajasthan": (18, 22, 8), "Bihar": (8, 15, 3),
                 "Punjab": (30, 35, 20), "Haryana": (35, 38, 22),
                 "Odisha": (20, 22, 10), "Jharkhand": (10, 14, 4),
                 "Chhattisgarh": (12, 16, 5),
             }
-            sa, sn, cp = state_lookup.get(d["state"], (20, 22, 10))
+            sa, sn, cp = state_lookup.get(d["state"], (12, 16, 5))
             awareness.append({
                 "state_name": d["state"],
                 "sleep_apnea_interest": sa,
@@ -652,7 +652,8 @@ def build_risk_scores(nfhs, census, aqi, awareness):
         # Estimated undiagnosed: 9.6% OSA prevalence * (1 - awareness)
         est_undiag = int(pop * 0.096 * (1 - (aw_norm or 0))) if pop else 0
 
-        is_desert = risk_score > 0.5 and (aw_norm or 0) < 0.3
+        is_desert = risk_score > 0.5 and (aw_norm or 0) < 0.3 and (pop or 0) >= 1_000_000
+        is_small = pop is not None and pop < 200_000
 
         row = {
             "district_id": f"{state[:3].upper()}-{district[:6].upper()}",
@@ -679,11 +680,12 @@ def build_risk_scores(nfhs, census, aqi, awareness):
             "awareness_gap_score": awareness_gap,
             "estimated_undiagnosed": est_undiag,
             "is_awareness_desert": is_desert,
+            "is_small_population": is_small,
         }
         joined.append(row)
 
-    # Sort by awareness gap descending (highest priority first)
-    joined.sort(key=lambda r: r["awareness_gap_score"], reverse=True)
+    # Sort by estimated undiagnosed descending (population-aware impact ranking)
+    joined.sort(key=lambda r: r["estimated_undiagnosed"], reverse=True)
     print(f"  -> Joined {len(joined)} districts")
 
     # Now classify using PERCENTILE-based thresholds (data-driven,

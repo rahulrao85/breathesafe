@@ -102,7 +102,7 @@ def _coerce(row: dict) -> dict:
                 out[k] = float(v)
             except (ValueError, TypeError):
                 out[k] = None
-        elif k == "is_awareness_desert":
+        elif k in ("is_awareness_desert", "is_small_population"):
             out[k] = (v == "True")
         else:
             out[k] = v

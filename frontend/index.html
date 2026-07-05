@@ -99,6 +99,22 @@
           <option value="MODERATE">MODERATE</option>
           <option value="LOW">LOW</option>
         </select>
+        <select id="sortBy" aria-label="Sort by">
+          <option value="estimated_undiagnosed">Sort: Est. Undiagnosed</option>
+          <option value="risk_score">Sort: Risk Score</option>
+          <option value="awareness_gap_score">Sort: Awareness Gap</option>
+          <option value="total_population">Sort: Population</option>
+          <option value="pm25_annual_mean">Sort: PM2.5</option>
+        </select>
+        <select id="limitSelect" aria-label="Rows to show">
+          <option value="50">50 rows</option>
+          <option value="100" selected>100 rows</option>
+          <option value="200">200 rows</option>
+          <option value="500">All rows</option>
+        </select>
+        <label class="filter-check">
+          <input id="desertCheck" type="checkbox" /> Deserts only
+        </label>
         <input id="searchBox" type="search" placeholder="Search district…" aria-label="Search district" />
         <button id="resetBtn" class="btn-secondary" type="button">Reset</button>
       </div>
@@ -299,7 +315,8 @@
       <strong>BreatheSafe</strong> · Google Cloud Gen AI Academy APAC 2026 · Cohort 2
       · Built by <a href="https://github.com/rahulrao85" target="_blank" rel="noopener">Rahul Rao</a>
       · <a href="https://github.com/rahulrao85/breathesafe" target="_blank" rel="noopener">Source on GitHub</a>
-      · Data: NFHS-5 · Census 2011 · CPCB · Google Trends
+      · Data: NFHS-5 (2019-21) · Census 2011 (calibrated) · CPCB-style AQI (2024) · Google Trends
+      · <span class="small-pop-note" title="Districts with population <200K had small NFHS-5 survey samples; scores may have higher uncertainty">🐤 Small-population indicator</span>
     </p>
   </footer>
 

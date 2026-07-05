@@ -9,7 +9,19 @@
 
 ---
 
-## 0. Connect a data source
+## New: is_small_population field
+
+The `district_risk_scores` view (and local CSV) now includes an
+`is_small_population` boolean flag (`True` when population < 200K).
+These districts have higher survey margin of error. Use this as a
+filter or conditional formatting in Looker Studio.
+
+The default sort is now by `estimated_undiagnosed` DESC (population-aware
+impact ranking), not `awareness_gap_score`.
+
+---
+
+## 0. Connect a data source (if rebuilding from scratch)
 
 1. Open https://lookerstudio.google.com → **Blank Report**.
 2. **Add data → BigQuery**.
@@ -31,7 +43,7 @@
 |  Sub:  Source: breathesafe.district_risk_scores  |  As of ...  |
 +----------------+-----------------------------------------------+
 |  KPI  |  KPI   |  KPI          |  KPI                          |
-| 365   |  92    |  3 deserts    |  0.306 avg risk               |
+|  365   |  92    |  3 deserts    |  0.306 avg risk               |
 | Dists |  HIGH  |  Awareness    |                               |
 | Scored|  Risk  |  Deserts      |                               |
 +----------------+-----------------------------------------------+
@@ -43,13 +55,13 @@
 |                                                                |
 +----------------------------------------------------------------+
 |                                                                |
-|  [TABLE — Top 30 districts by awareness_gap_score]             |
+|  [TABLE — Top 30 districts by estimated_undiagnosed]           |
 |   columns: district_name, state_name, risk_score,             |
 |            awareness_gap_score, estimated_undiagnosed,         |
 |            pm25_annual_mean, pct_adults_overweight_obese,      |
-|            pct_adults_hypertension                             |
-|   sort: awareness_gap_score desc                               |
-|   conditional formatting: risk_score > 0.5  → red bar          |
+|            pct_adults_hypertension, is_small_population        |
+|   sort: estimated_undiagnosed desc                              |
+|   conditional formatting: is_small_population = True → grey bg  |
 |                                                                |
 +----------------------------------------------------------------+
 |                                                                |
@@ -62,7 +74,7 @@
 |  [SCATTER — Risk vs Awareness, one dot per district]           |
 |   x: awareness_normalized   y: risk_score                     |
 |   color: risk_category                                        |
-|   size: total_population                                      |
+|   size: estimated_undiagnosed (was total_population)          |
 |   quadrant annotations: HIGH risk + LOW awareness = "Desert"  |
 |                                                                |
 +----------------------------------------------------------------+
@@ -95,9 +107,10 @@ Looker builder:
 |---|---|---|
 | `risk_score` | `0.25*htn_norm + 0.25*obesity_norm + 0.15*age50_norm + 0.10*male_norm + 0.25*pm25_norm` | 0-1, min-max normalized |
 | `risk_category` | `CASE WHEN risk_score >= P75 THEN 'HIGH' WHEN risk_score >= P25 THEN 'MODERATE' ELSE 'LOW' END` | thresholds computed in the view |
-| `awareness_gap_score` | `risk_score * (1 - awareness_normalized)` | 0-1, the headline metric |
+| `awareness_gap_score` | `risk_score * (1 - awareness_normalized)` | 0-1 |
 | `is_awareness_desert` | `risk_score > 0.5 AND awareness_normalized < 0.3` | boolean |
 | `estimated_undiagnosed` | `total_population * 0.096 * (1 - awareness_normalized)` | anchored to Sharma et al. |
+| `is_small_population` | `total_population < 200000` | boolean — filter out for more stable rankings |
 
 ---
 
@@ -114,6 +127,7 @@ Looker builder:
 ## 5. Sharing
 
 - Publish the report (`Share → Anyone with the link can view`).
+- Set the report name to **"BreatheSafe — India OSA Screening Intelligence"**
 - Paste the URL into the SPA's `Looker dashboard` card
   (`frontend/index.html`, section `#looker`) AND into the
   submission form.
@@ -125,3 +139,17 @@ Looker builder:
 The view reads from BigQuery. After any re-run of
 `scripts/process_data.py` + `bq load`, hit **Refresh data** in Looker
 Studio. The Bubble Map re-renders within a few seconds.
+
+---
+
+## 7. Quick fix for existing report
+
+If the report at the published URL exists but shows "Untitled Report":
+
+1. Open the URL → click **Edit** (pencil icon)
+2. Click the report title (top-left) → rename to
+   **"BreatheSafe — India OSA Screening Intelligence"**
+3. Click **File → Report settings** → verify data source is
+   `breathesafe.district_risk_scores`
+4. Click **Share → Enable link sharing → Anyone with the link can view**
+5. Click **Done**

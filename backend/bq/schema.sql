@@ -240,7 +240,7 @@ SELECT
     d.total_population * 0.096 * (1 - COALESCE(a.awareness_normalized, 0))
   ) AS estimated_undiagnosed,
 
-  -- Is this an "awareness desert"?
+  -- Is this an "awareness desert"? Only flag districts with meaningful population
   CASE
     WHEN (
       (0.25 * COALESCE(h.hypertension_normalized, 0)) +
@@ -250,9 +250,13 @@ SELECT
       (0.25 * COALESCE(aq.pm25_normalized, 0))
     ) > 0.5
     AND COALESCE(a.awareness_normalized, 0) < 0.3
+    AND d.total_population >= 1000000
     THEN TRUE
     ELSE FALSE
-  END AS is_awareness_desert
+  END AS is_awareness_desert,
+
+  -- Flag small-population districts (<200K) where survey data may have high margin of error
+  d.total_population < 200000 AS is_small_population
 
 FROM health_normalized h
 JOIN demo_normalized d ON h.district_id = d.district_id
@@ -260,7 +264,7 @@ LEFT JOIN aqi_normalized aq ON LOWER(TRIM(h.district_name)) = LOWER(TRIM(aq.dist
   AND LOWER(TRIM(h.state_name)) = LOWER(TRIM(aq.state_name))
 LEFT JOIN awareness a ON LOWER(TRIM(h.state_name)) = LOWER(TRIM(a.state_name))
 
-ORDER BY awareness_gap_score DESC;
+ORDER BY estimated_undiagnosed DESC;
 
 
 -- ============================================================

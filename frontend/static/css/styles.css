@@ -296,6 +296,18 @@ code {
   outline: none;
   border-color: var(--accent);
 }
+.filter-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.filter-check input {
+  accent-color: var(--accent);
+}
 .btn-secondary {
   background: var(--bg-3);
   color: var(--text);
@@ -420,6 +432,20 @@ tbody tr:last-child td { border-bottom: none; }
   padding: 2px 6px;
   border-radius: 8px;
   font-weight: 700;
+}
+.small-flag {
+  display: inline-block;
+  margin-left: 4px;
+  background: var(--warn);
+  color: white;
+  font-size: 9px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: 700;
+  cursor: help;
 }
 .bar-cell {
   position: relative;
